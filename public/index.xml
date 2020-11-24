@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>JuMp-ing</title>
+		<link>/</link>
+		<description>Recent content on </description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<copyright>© Copyright notice | Vitae theme for Hugo</copyright>
+		<lastBuildDate>Mon, 23 Nov 2020 00:00:00 +0000</lastBuildDate>
+		
+		<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Replicating VRPCD Paper</title>
+			<link>/post/test/</link>
+			<pubDate>Mon, 23 Nov 2020 00:00:00 +0000</pubDate>
+			
+			<guid>/post/test/</guid>
+			<description>
+				
+				This scripts shows how to replicate a optimization paper.
+using JuMP using GLPK model = Model(GLPK.Optimizer) @variable(...
+				
+			</description>
+		</item>
+		<item>
+			<title>About</title>
+			<link>/about/</link>
+			<pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+			
+			<guid>/about/</guid>
+			<description>
+				
+				Hugo, the world’s fastest framework for building websites
+				
+			</description>
+		</item>
+		<item>
+			<title>test</title>
+			<link>/post/test_1/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>/post/test_1/</guid>
+			<description>
+				
+				x=11 x 
+				
+			</description>
+		</item>
+		
+	</channel>
+</rss>
