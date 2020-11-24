@@ -1,15 +1,15 @@
-baseURL = "/"
+baseURL = "http://example.org/"
 languageCode = "en-us"
 defaultContentLanguage = "en"
-author = "Fahim Ahmed"
-title = "JuMp-ing"
-theme = "vitae"
+author = "Hugo Authors"
+title = "Vitae"
+theme = "hugo-vitae"
 paginate = 5
 enableRobotsTXT = true
 
 copyright = "© Copyright notice | [Vitae](https://github.com/dataCobra/hugo-vitae) theme for [Hugo](https://gohugo.io)"
 
-pygmentsstyle = "tango"
+pygmentsstyle = "colorful"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
@@ -25,16 +25,16 @@ googleAnalytics = ""
 	homepage = false
 
 	# Add meta keywords in head part (Site Keywords or Tags of Page)
-	keywords = ["mathematical programming","optimization","freight","supply chain","transportation"]
+	keywords = ["hugo","vitae","theme","static"]
 
 	# Add meta description in head part
-	description = "Dive into the mathematical optimization of freight transportation."
+	description = "Vitae is a blog theme for Hugo that focuses on your content."
 
 	# Add pagetitle to homepage <title> tag
-	pagetitle = "Mathematical Optimization throught the lens of freight transportation"
+	pagetitle = "All about static site generation"
 
 	# Add a subtitle to your website
-	subtitle = "Mathematical Optimization throught the lens of freight transportation"
+	subtitle = "[Vitae](https://github.com/dataCobra/hugo-vitae) is a blog theme for Hugo that focuses on your content."
 
 	# Activate to show authors on pages if available
 	#listAuthor = true
@@ -109,7 +109,7 @@ weight = 5
 [[params.social]]
 name = "Github"
 icon = "fab fa-github"
-url = "https://github.com/far24"
+url = "https://github.com/dataCobra/hugo-vitae"
 
 #[[params.social]]
 #name = "Email"
