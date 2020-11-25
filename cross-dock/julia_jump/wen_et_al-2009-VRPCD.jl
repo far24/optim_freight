@@ -148,7 +148,7 @@ cd_modl = Model(GLPK.Optimizer)
 
 #11:
 @constraint(cd_modl, unld_cd1[k=1:K],
-                    sum((u_ik[i,k] / M) for i=1:P) 
+                    sum((u_ik[i,k] / M) for i=1:P)
                     <= g_k[k]
             )
 
@@ -156,3 +156,15 @@ cd_modl = Model(GLPK.Optimizer)
                     g_k[k]
                     <= sum(u_ik[i,k] for i=1:P)
             )
+
+#12
+
+#13
+
+#14
+
+#15
+
+#16
+
+#17
