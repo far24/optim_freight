@@ -11,4 +11,7 @@ My primary learning source is from a the youtube channel of [**Sudoku Guy**](htt
 
 * [Lesson 1](https://www.youtube.com/watch?v=ckdwhm7GM94&list=PLAhxvOuSHpkYsUufBeuHjQUNcb3iHt9nl&index=1): Shows how to work using horizontal rows (Top, Middle, and Bottom row) in a block and/or horizontal blocks
 * [Lesson 2](https://www.youtube.com/watch?v=fYWLxCVwGJk&list=PLAhxvOuSHpkYsUufBeuHjQUNcb3iHt9nl&index=2): Shows how to work using vertical columns (Left, Center, and Right) in a blocks and/or comparing vertical blocks
-
+* [Lesson 3] (https://www.youtube.com/watch?v=kEhNlw38Pn4&list=PLAhxvOuSHpkYsUufBeuHjQUNcb3iHt9nl&index=3):
+	* how to solve when a horizontal/vertical/block has only two (2) cells empty
+	* matching pair technique   
+		

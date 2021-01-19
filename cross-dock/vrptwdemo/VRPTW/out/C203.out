@@ -1,0 +1,116 @@
+Application parameters:
+  batch  =>  nothing
+  tikz  =>  nothing
+  instance  =>  "/IN/C203.txt"
+  out  =>  nothing
+  nosolve  =>  false
+  ub  =>  588.8
+  sol  =>  nothing
+  cfg  =>  "/CFG/VRPTW_set_2.cfg"
+  enable_cap_res  =>  false
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+VRPSolver beta v0.11, 1/06/2019. Web: vrpsolver.math.u-bordeaux.fr
+Corresponds to the solver by Pessoa, Sadykov, Uchoa and Vanderbeck (2019)
+Paper: dx.doi.org/10.1007/978-3-030-17953-3_27
+USE THIS CODE ONLY FOR ACADEMIC PURPOSES AT YOUR OWN RISK
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BaPCod v042, 18/09/2019, © Inria Bordeaux, France (license expires 1/02/2021)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+VRPSolver parameters:
+GlobalTimeLimit = 36000
+MaxNbOfBBtreeNodeTreated = 100000
+treeSearchStrategy = 1
+RCSPstopCutGenTimeThresholdInPricing = 30
+RCSPhardTimeThresholdInPricing = 20
+RCSPnumberOfBucketsPerVertex = 25
+RCSPdynamicBucketSteps = 1
+RCSPuseBidirectionalSearch = 1
+RCSPapplyReducedCostFixing = 1
+RCSPmaxNumOfColsPerIteration = 30
+RCSPmaxNumOfColsPerExactIteration = 150
+RCSPheurLabelingStrategy = 0
+StabilizationMinPhaseOfStage = 0
+RCSPmaxNumOfLabelsInEnumeration = 1000000
+RCSPmaxNumOfEnumeratedSolutions = 5000000
+RCSPmaxNumOfEnumSolutionsForMIP = 10000
+RCSPinitNGneighbourhoodSize = 8
+RCSPmaxNGneighbourhoodSize = 16
+RCSPrankOneCutsMaxNumPerRound = 100
+RCSPrankOneCutsMaxNumRows = 5
+RCSPrankOneCutsMemoryType = 1
+CutTailingOffThreshold = 0.015
+CutTailingOffCounterThreshold = 3
+SafeDualBoundScaleFactor = -1
+StrongBranchingPhaseOneCandidatesNumber = 50
+StrongBranchingPhaseOneTreeSizeEstimRatio = 100
+StrongBranchingPhaseTwoCandidatesNumber = 3
+StrongBranchingPhaseTwoTreeSizeEstimRatio = 100
+MaxTimeForRestrictedMasterIpHeur = -1
+DivingHeurUseDepthLimit = -1
+MaxLDSbreadth = 0
+MaxLDSdepth = 0
+New model incumbent solution 588.8, TIME = 0h0m0s4t = 4
+Model is built TIME = 0h0m1s71t = 171
+************************************************************************************************
+**** BaB tree root node
+**** Local DB = -1e+12, global bounds : [ -1e+12 , 588.8 ], TIME = 0h0m1s72t = 172
+**** 1 open nodes, 0 columns (0 active), 0 dyn. constrs. (0 active), 202 art. vars. (202 active)
+************************************************************************************************
+<DWph=2> <it= 10> <et=2.08> <Mt= 0.04> <Spt= 0.25> <nCl=300> <DB=-6541489.3980> <Mlp=140072.2338> <PB=588.8> 
+<DWph=2> <it= 20> <et=2.45> <Mt= 0.04> <Spt= 0.28> <nCl=300> <DB=-4003585.2761> <Mlp=57117.6406> <PB=588.8> 
+<DWph=2> <it= 30> <et=2.84> <Mt= 0.10> <Spt= 0.24> <nCl=300> <DB=-2604439.7748> <Mlp=22805.7299> <PB=588.8> 
+<DWph=2> <it= 40> <et=3.29> <Mt= 0.13> <Spt= 0.28> <nCl=300> <DB=-1507381.2006> <Mlp= 9772.3296> <PB=588.8> 
+<DWph=2> <it= 50> <et=3.85> <Mt= 0.20> <Spt= 0.30> <nCl=300> <DB=-826300.8611> <Mlp= 2869.7605> <PB=588.8> 
+<DWph=2> <it= 60> <et=4.40> <Mt= 0.25> <Spt= 0.25> <nCl=300> <DB=-37969.9967> <Mlp= 1775.6165> <PB=588.8> 
+<DWph=2> <it= 70> <et=4.95> <Mt= 0.21> <Spt= 0.28> <nCl=300> <DB=-26368.2649> <Mlp= 1539.6362> <PB=588.8> 
+<DWph=2> <it= 80> <et=5.56> <Mt= 0.23> <Spt= 0.34> <nCl=300> <DB=-15351.8753> <Mlp= 1369.6765> <PB=588.8> 
+<DWph=2> <it= 90> <et=6.19> <Mt= 0.27> <Spt= 0.30> <nCl=300> <DB=-12432.0702> <Mlp= 1193.0954> <PB=588.8> 
+<DWph=2> <it=100> <et=7.08> <Mt= 0.40> <Spt= 0.43> <nCl=300> <DB=-7275.6715> <Mlp= 1087.2723> <PB=588.8> 
+<DWph=2> <it=110> <et=7.45> <Mt= 0.19> <Spt= 0.12> <nCl=300> <DB=-4842.2874> <Mlp= 1006.3916> <PB=588.8> 
+<DWph=2> <it=120> <et=8.12> <Mt= 0.29> <Spt= 0.32> <nCl=300> <DB=-3379.8574> <Mlp=  943.4163> <PB=588.8> 
+<DWph=2> <it=130> <et=9.11> <Mt= 0.41> <Spt= 0.53> <nCl=300> <DB=-2875.1016> <Mlp=  882.6648> <PB=588.8> 
+<DWph=2> <it=140> <et=9.68> <Mt= 0.25> <Spt= 0.26> <nCl=300> <DB=-2057.3573> <Mlp=  822.4488> <PB=588.8> 
+<DWph=2> <it=150> <et=10.42> <Mt= 0.31> <Spt= 0.35> <nCl=297> <DB=-1915.6002> <Mlp=  761.6753> <PB=588.8> 
+<DWph=2> <it=160> <et=11.18> <Mt= 0.34> <Spt= 0.38> <nCl=300> <DB=-1269.5302> <Mlp=  720.4945> <PB=588.8> 
+<DWph=2> <it=170> <et=11.65> <Mt= 0.22> <Spt= 0.17> <nCl=300> <DB= -593.9812> <Mlp=  695.5893> <PB=588.8> 
+<DWph=2> <it=180> <et=11.97> <Mt= 0.12> <Spt= 0.12> <nCl=300> <DB= -400.6620> <Mlp=  681.0268> <PB=588.8> 
+<DWph=2> <it=190> <et=12.25> <Mt= 0.13> <Spt= 0.10> <nCl=298> <DB= -182.0630> <Mlp=  668.2639> <PB=588.8> 
+<DWph=2> <it=200> <et=12.57> <Mt= 0.15> <Spt= 0.10> <nCl=298> <DB= -142.6181> <Mlp=  655.7648> <PB=588.8> 
+<DWph=2> <it=210> <et=13.53> <Mt= 0.75> <Spt= 0.15> <nCl=296> <DB=-1384.4567> <Mlp=  638.4195> <PB=588.8> 
+<DWph=2> <it=220> <et=14.16> <Mt= 0.44> <Spt= 0.13> <nCl=294> <DB=  317.6126> <Mlp=  634.9594> <PB=588.8> 
+<DWph=2> <it=230> <et=14.69> <Mt= 0.36> <Spt= 0.10> <nCl=274> <DB=  313.9081> <Mlp=  633.3170> <PB=588.8> 
+<DWph=2> <it=240> <et=15.17> <Mt= 0.33> <Spt= 0.10> <nCl=274> <DB=  371.9799> <Mlp=  631.8116> <PB=588.8> 
+<DWph=2> <it=250> <et=15.62> <Mt= 0.28> <Spt= 0.10> <nCl=258> <DB=  425.9514> <Mlp=  630.8698> <PB=588.8> 
+<DWph=2> <it=260> <et=16.05> <Mt= 0.27> <Spt= 0.10> <nCl=244> <DB=  360.3069> <Mlp=  630.4535> <PB=588.8> 
+<DWph=2> <it=270> <et=16.45> <Mt= 0.25> <Spt= 0.10> <nCl=213> <DB=  498.7783> <Mlp=  630.0900> <PB=588.8> 
+<DWph=2> <it=280> <et=16.75> <Mt= 0.11> <Spt= 0.11> <nCl=203> <DB=  431.0854> <Mlp=  629.6699> <PB=588.8> 
+<DWph=2> <it=290> <et=17.07> <Mt= 0.16> <Spt= 0.10> <nCl=243> <DB=  370.9747> <Mlp=  629.2875> <PB=588.8> 
+<DWph=2> <it=296> <et=17.24> <Mt= 0.06> <Spt= 0.07> <nCl= 95> <DB=  632.8238> <Mlp=  629.1918> <PB=588.8> 
+<DWph=1> <it=300> <et=17.42> <Mt= 0.07> <Spt= 0.09> <nCl=120> <DB=  198.1198> <Mlp=  629.0117> <PB=588.8> 
+<DWph=1> <it=310> <et=18.34> <Mt= 0.57> <Spt= 0.29> <nCl=294> <DB=  312.5643> <Mlp=  627.6014> <PB=588.8> 
+<DWph=1> <it=320> <et=19.21> <Mt= 0.62> <Spt= 0.21> <nCl=280> <DB=  455.8287> <Mlp=  626.5075> <PB=588.8> 
+<DWph=1> <it=330> <et=19.71> <Mt= 0.27> <Spt= 0.20> <nCl=248> <DB=  543.9918> <Mlp=  626.3468> <PB=588.8> 
+<DWph=1> <it=331> <et=19.75> <Mt= 0.01> <Spt= 0.02> <nCl= 13> <DB=  626.9522> <Mlp=  626.3468> <PB=588.8> 
+<DWph=0> <it=340> <et=22.42> <Mt= 0.64> <Spt= 1.51> <nCl=1288> <DB=  -28.4325> <Mlp=  624.3123> <PB=588.8> 
+<DWph=0> <it=350> <et=25.76> <Mt= 1.84> <Spt= 1.43> <nCl=1473> <DB=  169.7152> <Mlp=  601.9013> <PB=588.8> 
+<DWph=0> <it=360> <et=28.87> <Mt= 1.23> <Spt= 1.42> <nCl=1364> <DB=  388.9170> <Mlp=  598.1250> <PB=588.8> 
+<DWph=0> <it=370> <et=30.68> <Mt= 0.81> <Spt= 0.95> <nCl=1109> <DB=  482.4059> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=380> <et=32.41> <Mt= 0.82> <Spt= 0.85> <nCl=1183> <DB=  540.0858> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=390> <et=35.53> <Mt= 0.97> <Spt= 1.61> <nCl=1010> <DB=  574.5910> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=400> <et=37.75> <Mt= 0.39> <Spt= 1.78> <nCl=882> <DB=  585.8394> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=410> <et=39.86> <Mt= 0.29> <Spt= 1.79> <nCl=1119> <DB=  587.2241> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=420> <et=42.52> <Mt= 0.29> <Spt= 1.85> <nCl=440> <DB=  588.6176> <Mlp=  588.7000> <PB=588.7> 
+<DWph=0> <it=422> <et=43.07> <Mt= 0.01> <Spt= 0.52> <nCl= 12> <DB=  588.7000> <Mlp=  588.7000> <PB=588.7> 
+ColGenEvalAlg final dual bound: 588.7 (rounded: 588.7)
+New model incumbent solution 588.7, TIME = 0h0m43s11t = 4311
+************************************************************************************************
+Search is finished, global bounds : [ 588.7 , 588.7 ], TIME = 0h0m43s11t = 4311
+************************************************************************************************
+[32mBaPCod : solution defined.[00m
+statistics: C203 & 1 & 588.8 & 588.70 & 43.10 & 1 & 588.70 & 588.70 & 43.11 \\
+########################################################
+Route #1: 20 22 24 27 30 29 6 32 33 31 35 37 38 39 36 34 28 26 23 18 19 16 14 12 15 17 13 25 9 11 10 8 21 
+Route #2: 67 63 62 74 72 61 64 66 69 68 65 49 55 54 53 56 58 60 59 57 40 44 46 45 51 50 52 47 42 41 43 48 
+Route #3: 93 5 75 2 1 99 100 97 92 94 95 98 7 3 4 89 91 88 84 86 83 82 85 76 71 70 73 80 79 81 78 77 96 87 90 
+Cost 588.7000000000446
+########################################################

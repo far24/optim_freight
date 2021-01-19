@@ -1,0 +1,36 @@
+# If you want to use VRPSolver script to run this batch, comment lines for the docker call (starting with /VRPTW/data) and uncomment lines below the VRPSolver script call (starting with data/).
+# docker call requires all paths being container paths (e.g. /VRPTW/data/100/C203.txt -u 588.8 --cfg /VRPTW/config/VRPTW_set_2.cfg)
+# VRPSolver script call requires that the paths (e.g. data/100/C203.txt -u 588.8 --cfg config/VRPTW_set_2.cfg) be relatives to the application directory
+# Tip: after a batch execution, call 'grep statistics out/solomon.out -h | cut -c13-' to get the results as rows for a LaTeX table.
+
+# docker run --rm -v /ABSOLUTE_PATH_TO_VRPTW_APP:/VRPTW bapdock /VRPTW/src/run.jl -b /VRPTW/solomon.batch &> out/solomon.out
+/VRPTW/data/100/C203.txt -u 588.8 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/C204.txt -u 588.2 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/RC204.txt -u 783.6 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/RC207.txt -u 963.0 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/RC208.txt -u 776.2 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R202.txt -u 1029.7 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R203.txt -u 870.9 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R204.txt -u 731.4 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R206.txt -u 876.0 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R207.txt -u 794.1 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R208.txt -u 701.1 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R209.txt -u 854.9 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R210.txt -u 900.6 --cfg /VRPTW/config/VRPTW_set_2.cfg
+/VRPTW/data/100/R211.txt -u 746.8 --cfg /VRPTW/config/VRPTW_set_2.cfg
+
+# ./VRPSolver -b solomon.batch &> out/solomon.out
+# data/100/C203.txt -u 588.8 --cfg config/VRPTW_set_2.cfg
+# data/100/C204.txt -u 588.2 --cfg config/VRPTW_set_2.cfg
+# data/100/RC204.txt -u 783.6 --cfg config/VRPTW_set_2.cfg
+# data/100/RC207.txt -u 963.0 --cfg config/VRPTW_set_2.cfg
+# data/100/RC208.txt -u 776.2 --cfg config/VRPTW_set_2.cfg
+# data/100/R202.txt -u 1029.7 --cfg config/VRPTW_set_2.cfg
+# data/100/R203.txt -u 870.9 --cfg config/VRPTW_set_2.cfg
+# data/100/R204.txt -u 731.4 --cfg config/VRPTW_set_2.cfg
+# data/100/R206.txt -u 876.0 --cfg config/VRPTW_set_2.cfg
+# data/100/R207.txt -u 794.1 --cfg config/VRPTW_set_2.cfg
+# data/100/R208.txt -u 701.1 --cfg config/VRPTW_set_2.cfg
+# data/100/R209.txt -u 854.9 --cfg config/VRPTW_set_2.cfg
+# data/100/R210.txt -u 900.6 --cfg config/VRPTW_set_2.cfg
+# data/100/R211.txt -u 746.8 --cfg config/VRPTW_set_2.cfg
