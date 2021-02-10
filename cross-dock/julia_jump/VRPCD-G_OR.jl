@@ -1,6 +1,7 @@
 #*****************************************
 # Necessary Package
 #*****************************************
+using Dates
 using Random
 using JuMP
 using LinearAlgebra
@@ -16,14 +17,14 @@ O_dum_pick = [1]
 O_dum_del = [20]
 
 # P: set of pickup nodes
-P = [2,3,4]
+P = [2,3,4,5,6]
 
 # O: cross-dock (assume single cross dock in the network)
 O_pick = [10]
 O_del = [11]
 
 # D: set of delivery nodes
-D = [12,13]
+D = [12,13,14,15,17]
 
 # pickup nodes
 N_pickup = vcat(O_dum_pick, P, O_pick)
@@ -35,7 +36,7 @@ N_delivery = vcat(O_del, D, O_dum_del)
 N = vcat(O_dum_pick, P, O_pick, O_del, D, O_dum_del)
 
 # M: set of available vehicles
-M = [1,2]
+M = [1,2,3,4,5,6]
 
 # may be we need to position each entity in a graph to find distance/ time automatically
 print(P,D,O_pick, O_del, N_pickup, N_delivery, N, M)
@@ -55,9 +56,9 @@ tw_i = [
         (0,240), # 10 Depot: PICKUP
         (0,240), # 11 Depot: DELIVERY
         (0, 105),  # 12
-        (0, 160),  # 13
-        (0, 150),  # 14
-        (0,105),  # 15
+        (20, 23),  # 13
+        (20, 23),  # 14
+        (18,21),  # 15
         (0, 100),  # 16
         (0, 120),  # 17
         (0, 150),  # 18
@@ -267,28 +268,28 @@ cd_modl = Model(GLPK.Optimizer)
 
 # [Delivery Process] 01: only one vehicle can arrive at a pickup node
 @constraint(cd_modl, d_node_entry[j= D],
-                    sum(x_ijk[i,j,k] for i=vcat(O_del, D) for k=1:m if i != j) == 1)
+                    sum(x_ijk[i,j,k] for i=vcat(O_del, D) for k=M if i != j) == 1)
 
 # [Delivery Process] 02: Only one vehicle depart from the pickup node
 @constraint(cd_modl, d_node_exit[i= D],
-                    sum(x_ijk[i,j,k] for j=vcat(D,O_dum_del) for k=1:m if i != j) == 1)
+                    sum(x_ijk[i,j,k] for j=vcat(D,O_dum_del) for k=M if i != j) == 1)
 
 # [Delivery Process] 03: Consecutive movement of vehicles
-@constraint(cd_modl, cons_move_del[l = D, k=1:m],
+@constraint(cd_modl, cons_move_del[l = D, k=M],
     sum(x_ijk[i,l,k] for i=vcat(O_del, D) if i != l)
     -sum(x_ijk[l,j,k] for j=vcat(D,O_dum_del) if j != l)
     == 0)
 
 # [Delivery Process] 04: vehicle enter at dummy cross dock after last delivery
-@constraint(cd_modl, d_dum_enter[k=1:m],
+@constraint(cd_modl, d_dum_enter[k=M],
     sum(x_ijk[i,j,k] for i= D for j = O_dum_del) <= 1)
 
 # [Delivery Process] 05: vehicle leave cross dock
-@constraint(cd_modl, d_cd_leave[k=1:m],
+@constraint(cd_modl, d_cd_leave[k=M],
     sum(x_ijk[i,j,k] for i= O_del for j = D) <= 1)
 
 # [Delivery Process] 06:
-@constraint(cd_modl, d_del_qnt[k=1:m, i = D, j = D; i!=j],
+@constraint(cd_modl, d_del_qnt[k=M, i = D, j = D; i!=j],
     y_i[j]
     - y_i[i]
     - d_i[j]
@@ -298,7 +299,7 @@ cd_modl = Model(GLPK.Optimizer)
     >= 0)
 
 # [Delivery Process] 07:
-@constraint(cd_modl, d_del_qnt2[i = O_del, j = D, k=1:m],
+@constraint(cd_modl, d_del_qnt2[i = O_del, j = D, k=M],
     y_i[j]
     - x_ijk[i,j,k]*d_i[j]
     - (1-x_ijk[i,j,k])*Q
@@ -391,6 +392,7 @@ cd_modl = Model(GLPK.Optimizer)
 
 )
 
+print("starting the optimization model @ ", now())
 optimize!(cd_modl)
 
 @show objective_value(cd_modl)
@@ -429,8 +431,8 @@ end
 print( "veh \t node \t arr_time \n")
 
 temp = 0
-for k=1:m
-    for i= 1:n
+for k=M
+    for i=N
         if value.(s_ik[i,k]) > 0
             print(k, "\t", i, "\t", value.(s_ik[i,k]), "\n")
         end
@@ -441,8 +443,8 @@ end
 print( "veh \t node \t tardiness \n")
 
 temp = 0
-for k=1:m
-    for i= 1:n
+for k=M
+    for i=N
         if value.(l_ik[i,k]) > 0
             print(k, "\t", i, "\t", value.(l_ik[i,k]), "\n")
         end
