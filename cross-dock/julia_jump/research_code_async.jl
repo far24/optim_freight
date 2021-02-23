@@ -1,3 +1,6 @@
+# vehicle routing problem with cross-dock
+# Wen et al. (2009)
+
 #*****************************************
 # Necessary Package
 #*****************************************
@@ -8,17 +11,14 @@ using LinearAlgebra
 using CSV
 using Distances
 
-# vehicle routing problem with cross-dock
-# Wen et al. (2009)
-
 #*****************************************
 # Network Property
 #*****************************************
 # suppliers are the pick-up nodes
-P = [1,2]
+P = [1,2,3]
 
 # customers are the delivery nodes
-D = [3,4]
+D = [4,5,6]
 
 # cross-docks
 cd_pick_start = [D[end]+1]
@@ -26,12 +26,10 @@ cd_pick_end = [D[end]+2]
 cd_del_start = [D[end]+3]
 cd_del_end = [D[end]+4]
 
-
-
 N = vcat(P,D, cd_pick_start, cd_pick_end, cd_del_start, cd_del_end)
 
 # vehicles
-K = [1]
+K = [1,2]
 
 # ****************************************
 # parameters
@@ -39,12 +37,12 @@ K = [1]
 # number of pickup/delivery Nodes
 n = length(P)
 
-d_i = [10,20,10,20, 1,1,1,1]
+d_i = [10,20,10,1,1,1,1,1,1,1]
 veh_cap = 40
 
 # location of nodes on a graph
 #c = [9,5,4,8,13,11,8,8]
-c = [90,50,150,130,80,80,80,80]
+c = [30000, 10, 60, 100, 130, 150 ,80,80,80,80]
 t_ij = pairwise(Euclidean(), c'; dims=2)
 t_ij
 
@@ -115,11 +113,11 @@ cd_modl = Model(GLPK.Optimizer)
 
 # 02: start from cross dock // all the trucks must be utilized
 @constraint(cd_modl, p_nd_start[i= cd_pick_start, k=K],
-                    sum(x_ijk[i,j,k] for j=P if i != j) == 1)
+                    sum(x_ijk[i,j,k] for j=P if i != j) <= 1)
 
 # 03: end at cross dock
 @constraint(cd_modl, p_nd_end[j= cd_pick_end, k=K],
-                sum(x_ijk[i,j,k] for i=P if i != j) == 1)
+                sum(x_ijk[i,j,k] for i=P if i != j) <= 1)
 
 # 04: capacity of vehicle
 @constraint(cd_modl, p_veh_cap[k=K],
@@ -138,11 +136,11 @@ cd_modl = Model(GLPK.Optimizer)
 
 # 02: start from cross dock // all the trucks must be utilized
 @constraint(cd_modl, d_nd_start[i= cd_del_start, k=K],
-                sum(x_ijk[i,j,k] for j=D if i != j) == 1)
+                sum(x_ijk[i,j,k] for j=D if i != j) <= 1)
 
 # 03: end at cross dock
 @constraint(cd_modl, d_nd_end[j= cd_del_end, k=K],
-                sum(x_ijk[i,j,k] for i=D if i != j) == 1)
+                sum(x_ijk[i,j,k] for i=D if i != j) <= 1)
 
 # 04: capacity of vehicle
 @constraint(cd_modl, d_veh_cap[k=K],
@@ -155,6 +153,19 @@ cd_modl = Model(GLPK.Optimizer)
 
 
 # --------------------[time constraints]
+@constraint(cd_modl, arr_time_pick[i=N,j=N,k=K; i != j],
+                    s_ik[j,k]
+                    - s_ik[i,k]
+                    - t_ij[i,j]
+                    + M*(1-x_ijk[i,j,k])
+                     >= 0)
+
+# time window constraint for each node
+@constraint(cd_modl, tw[i=N, k=K],
+                 0 <= s_ik[i,k] <= 250)
+
+
+#=
 # 01: arrival time of vehicle at pickup nodes
 @constraint(cd_modl, arr_time_pick[i=vcat(cd_pick_start, P, cd_pick_end),j=vcat(cd_pick_start, P, cd_pick_end),k=K; i != j],
                     s_ik[j,k]
@@ -170,7 +181,7 @@ cd_modl = Model(GLPK.Optimizer)
                  - t_ij[i,j]
                  + M*(1-x_ijk[i,j,k])
                   >= 0)
-
+=#
 # --------------------[consolidation decision]
 
 # consolidation decisions
@@ -244,6 +255,7 @@ cd_modl = Model(GLPK.Optimizer)
 sum(t_ij[i,j] * x_ijk[i,j,k] for i=N for j=N for k=K))
 
 
+print("------------------------starting optimization--------------------------")
 optimize!(cd_modl)
 
 
@@ -255,4 +267,27 @@ elseif termination_status(cd_modl) == MOI.TIME_LIMIT && has_values(model)
     suboptimal_objective = objective_value(cd_modl)
 else
     error("The model was not solved correctly.")
+end
+
+
+
+
+for k=K
+    print("\nveh: ", k, "\t")
+    for i= N
+        for j=N
+            if value.(x_ijk[i,j,k]) == 1
+                print(i, "-->", j, "\t")
+            end
+        end
+    end
+end
+
+
+
+for k=K
+    print("\nveh: ", k)
+    for i= N
+        print("\tnode: ", i, "\t\t time: ", value.(s_ik[i,k]), "\n")
+    end
 end
