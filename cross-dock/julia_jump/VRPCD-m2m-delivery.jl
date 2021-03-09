@@ -1,6 +1,3 @@
-D = [3,4]
-
-
 # ****************************************
 # Create a JuMP model
 # ****************************************
@@ -21,11 +18,11 @@ del_mod = Model(GLPK.Optimizer)
 
 # CONTINUOUS
 # ^^^^^^^^^^^^
-# tp_ik :: Time at which vehicle k leaves pickup node i (i [ S, k [ KS)
-# td_hl :: Time at which vehicle l leaves delivery node h (h [ D, l [ KD)
-# RT_k :: Release time of pickup vehicle k at the cross-dock (k [ KS)
-# DT_l :: Starting time of delivery vehicle l at the cross dock (l [ KD)
+# atd_ik :: Time at which vehicle k leaves pickup node i (i [ S, k [ KS)
 @variable(del_mod, atd_ik[i=vcat(cd_del_start, D, cd_del_end), k=K_D] >=0)
+# l_ik = tardiness (tardiness/lateness = upper TW (b_i) - arrival time (s_ik)) at node i by vehicle k ==> this would be a non-linear constraint
+# l_i = tardiness at node i
+@variable(del_mod, l_ik[i=vcat(cd_del_start,D,cd_del_end), k = K_D] >= 0)
 
 
 # ****************************************
@@ -73,7 +70,7 @@ del_mod = Model(GLPK.Optimizer)
 @constraint(del_mod, d_veh_cap[k=K_D],
                     sum(d_i[i] * v_ik[i,k] for i=D) <= Q)
 
-# -----------[time constraints]
+# -----------[delivery process:: time constraints]
 # time a pickup vehicle k arrives at pickup node j after visiting pickup node i
 @constraint(del_mod, d_veh_arr[i=vcat(cd_del_start,D), j=vcat(D,cd_del_end), k=K_D; i !=j],
                     atd_ik[j,k]
@@ -84,13 +81,22 @@ del_mod = Model(GLPK.Optimizer)
 @constraint(del_mod, d_init_dep_time[i=D, k=K_D],
                 atd_ik[i,k] <= M*v_ik[i,k])
 
+b_i = [0,0,50,40,100,100,100,100]
+# calculate the tardiness of vehicle arrival at node i
+@constraint(del_mod, tard_del[j=vcat(cd_del_start, D, cd_del_end), k=K_D],
+    l_ik[j,k]
+    >= atd_ik[j,k] - b_i[j]
+    - M*(1-v_ik[j,k])
+    )
+
+
 
 # ****************************************
 # Objective
 #*****************************************
 @objective(del_mod, Min,
 sum(t_ij[i,j] * z_ijk[i,j,k] for i=vcat(cd_del_start,D) for j=vcat(D,cd_del_end) for k=K_D)
-#    +sum(t_ij[h,f] * z_hfl[h,f,l] for h=D for f=D for l=K_D)
+   +sum(9999 * l_ik[i,k] for i=vcat(cd_del_start,D,cd_del_end) for k=K_D)
 )
 
 

@@ -70,7 +70,7 @@ pick_mod = Model(GLPK.Optimizer)
 @constraint(pick_mod, p_veh_cap[k=K_S],
                     sum(p_i[i] * y_ik[i,k] for i=P) <= Q)
 
-# -----------[time constraints]
+# -----------[pickup process:: time constraints]
 # time a pickup vehicle k arrives at pickup node j after visiting pickup node i
 @constraint(pick_mod, p_veh_arr[i=vcat(cd_pick_start,P), j=vcat(P,cd_pick_end), k=K_S; i !=j],
                     atp_ik[j,k]
