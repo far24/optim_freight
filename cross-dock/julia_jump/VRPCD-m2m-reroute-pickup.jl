@@ -8,6 +8,9 @@ current_time = 30
 
 
 
+
+
+
 # ****************************************
 # Create a JuMP_un model
 # ****************************************
@@ -75,7 +78,7 @@ pick_reroute_mod = Model(GLPK.Optimizer)
 
 # [new vehicle:: K_S_new]::
 # Capacity Constraints
-@constraint(pick_reroute_mod, p_newveh_cap[k=K_S_new],
+@constraint(pick_reroute_mod, p_re_newveh_cap[k=K_S_new],
                     sum(p_i[i] * y_ik[i,k] for i=P_un) <= Q
 )
 
@@ -144,7 +147,7 @@ pick_reroute_mod = Model(GLPK.Optimizer)
 # [existing vehicle:: K_S_exist]::
 # Capacity Constraints
 @constraint(pick_reroute_mod, p_exstveh_cap[k=K_S_exst],
-                    sum(p_i[i] * y_ik[i,k] for i=P_un) <= 100 - sum(p_i[i] * y_ik[i,k] for i =[2])
+                    sum(p_i[i] * y_ik[i,k] for i=P_un) <= Q - sum(p_i[i] * y_ik[i,k] for i =[2])
 )
 
 # [existing vehicle:: K_S_exist]::
