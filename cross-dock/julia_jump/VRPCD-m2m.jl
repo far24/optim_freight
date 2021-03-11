@@ -60,8 +60,8 @@ CV = [
 ]
 =#
 CV = [
-0 0 1 1;
 0 0 1 0;
+0 0 1 1;
 1 1 0 0;
 1 0 0 0
 ]
@@ -91,8 +91,8 @@ u = 5
 l = 5
 
 # time window at the Nodes
-a_i = [0,0,0,0,0,0,0,0]
-b_i = [0,0,240,240,240,240,240,240]
+a_i = [0,0,100,90,0,0,0,0]
+b_i = [0,0,135,125,240,240,240,240]
 # maximum route duration
 T = 99999
 
@@ -121,10 +121,13 @@ cd_mod = Model(GLPK.Optimizer)
 
 # CONTINUOUS
 # ^^^^^^^^^^^^
-# tp_ik :: Time at which vehicle k leaves pickup node i (i [ S, k [ KS)
-# td_hl :: Time at which vehicle l leaves delivery node h (h [ D, l [ KD)
+# atp_ik :: Time at which vehicle k leaves pickup node i (i [ S, k [ KS)
+# atd_hl :: Time at which vehicle l leaves delivery node h (h [ D, l [ KD)
+# ld_ik = tardiness (tardiness/lateness = upper TW (b_i) - arrival time (s_ik)) at node i by vehicle k ==> this would be a non-linear constraint
+# ld_i = tardiness at node i
 @variable(cd_mod, atp_ik[i=vcat(cd_pick_start,P,cd_pick_end), k=K_S] >=0)
 @variable(cd_mod, atd_ik[i=vcat(cd_del_start, D, cd_del_end), k=K_D] >=0)
+@variable(cd_mod, ld_ik[i=vcat(cd_del_start,D,cd_del_end), k = K_D] >= 0)
 
 # RT_k :: Release time of pickup vehicle k at the cross-dock (k [ KS)
 # DT_l :: Starting time of delivery vehicle l at the cross dock (l [ KD)
@@ -245,27 +248,43 @@ cd_mod = Model(GLPK.Optimizer)
 
 # -----------[delivery process:: time constraints]
 # set the departure time of vehicles from cross dock to be dt_k + loading time
-@constraint(cd_mod, d_init_dep_time[i= cd_del_start, k=K_D],
-                    atd_ik[i,k]
-                    >= dt_k[k] + l
+@constraint(cd_mod, d_depCD[i= cd_del_start, j=D, k=K_D],
+                    atd_ik[j,k]
+                    >= dt_k[k] + l + t_ij[i,j] - M*(1-z_ijk[i,j,k])
             )
 
 # time a delivery vehicle k arrives at delivery node j after leaving the cross dock
-@constraint(cd_mod, d_veh_arr[i=vcat(cd_del_start,D), j=vcat(D,cd_del_end), k=K_D; i !=j],
+@constraint(cd_mod, d_veh_arr[i=D, j=D, k=K_D; i !=j],
                     atd_ik[j,k]
                     >= atd_ik[i,k] + sp_i + t_ij[i,j]  - M*(1-z_ijk[i,j,k])
             )
 
+@constraint(cd_mod, d_veh_CDarr[i=D, j=cd_del_end, k=K_D; i !=j],
+                atd_ik[j,k]
+                >= atd_ik[i,k] + sp_i + t_ij[i,j]  - M*(1-z_ijk[i,j,k])
+        )
 
+
+@constraint(cd_mod, d_init_dep_time[i=vcat(cd_del_start, D, cd_del_end), k=K_D],
+                atd_ik[i,k] <= M*v_ik[i,k]
+                )
+# calculate the tardiness of vehicle at the customer location of delivery Process
+@constraint(cd_mod, tard_del[j=vcat(cd_del_start, D, cd_del_end), k=K_D],
+    ld_ik[j,k]
+    >= atd_ik[j,k] - b_i[j]
+    - M*(1-v_ik[j,k])
+    )
 
 
 
 # ****************************************
 # Objective
 #*****************************************
+transp_cost = 200
 @objective(cd_mod, Min,
-sum(t_ij[i,j] * x_ijk[i,j,k] for i=vcat(cd_pick_start,P) for j=vcat(P,cd_pick_end) for k=K_S)
-+ sum(t_ij[i,j] * z_ijk[i,j,k] for i=vcat(cd_del_start,D) for j=vcat(D,cd_del_end) for k=K_D)
+sum(transp_cost* t_ij[i,j] * x_ijk[i,j,k] for i=vcat(cd_pick_start,P) for j=vcat(P,cd_pick_end) for k=K_S)
++ sum(transp_cost * t_ij[i,j] * z_ijk[i,j,k] for i=vcat(cd_del_start,D) for j=vcat(D,cd_del_end) for k=K_D)
++ sum(5*transp_cost * ld_ik[i,k] for i=vcat(cd_del_start,D,cd_del_end) for k=K_D)
 )
 
 
@@ -284,13 +303,28 @@ else
 end
 
 
-
-
-for k=K
+print("\nVR:: Pickup Process")
+for k=K_S
     print("\nveh: ", k, "\t")
-    for i= N
-        for j=N
+    counter = 1
+    for i=vcat(cd_pick_start,P)
+        for j=vcat(P,cd_pick_end)
             if value.(x_ijk[i,j,k]) == 1
+                print("counter", counter, "\n")
+                print("Node",i, "-->", "Node",j, "\t")
+            end
+        end
+    end
+    counter +=1
+end
+
+
+print("\nVR:: Delivery Process")
+for k=K_D
+    print("\nveh: ", k, "\t")
+    for i=vcat(cd_del_start,D)
+        for j=vcat(D,cd_del_end)
+            if value.(z_ijk[i,j,k]) == 1
                 print(i, "-->", j, "\t")
             end
         end
@@ -298,10 +332,53 @@ for k=K
 end
 
 
+# OUTPUT from the model---------------------------------------------------------
 
-for k=K
-    print("\nveh: ", k)
-    for i= N
-        print("\tnode: ", i, "\t\t time: ", value.(s_ik[i,k]), "\n")
-    end
+
+using DataFrames
+
+p_node_visit = DataFrame(node =[], veh =[], visit = [])
+for k in keys(y_ik)
+    key = Tuple(k[:])
+    node = key[1]
+    veh = key[2]
+    visit = JuMP.value.(y_ik[key...])
+    print("Node: ", node, "\t", "veh\t", veh, "visit ", visit, "\n")
+    push!(p_node_visit, vcat(node, veh, visit))
 end
+
+d_node_visit = DataFrame(node =[], veh =[], visit = [])
+for k in keys(v_ik)
+    key = Tuple(k[:])
+    node = key[1]
+    veh = key[2]
+    visit = JuMP.value.(v_ik[key...])
+    print("Node: ", node, "\t", "veh\t", veh, "visit ", visit, "\n")
+    push!(d_node_visit, vcat(node, veh, visit))
+end
+
+node_visit = vcat(p_node_visit, d_node_visit)
+
+p_arr_time = DataFrame(node =[], veh =[], arr = [])
+for k in keys(atp_ik)
+    key = Tuple(k[:])
+    node = key[1]
+    veh = key[2]
+    arr_time = JuMP.value.(atp_ik[key...])
+    print("Node: ", node, "\t", "veh\t", veh, "\tarr ", p_arr_time, "\n")
+    push!(p_arr_time, vcat(node, veh, arr_time))
+end
+
+d_arr_time = DataFrame(node =[], veh =[], arr = [])
+for k in keys(atd_ik)
+    key = Tuple(k[:])
+    node = key[1]
+    veh = key[2]
+    arr_time = JuMP.value.(atd_ik[key...])
+    print("Node: ", node, "\t", "veh\t", veh, "\tarr ", p_arr_time, "\n")
+    push!(d_arr_time, vcat(node, veh, arr_time))
+end
+
+arr_time = vcat(p_arr_time, d_arr_time)
+
+node_output = innerjoin(node_visit, arr_time, on = [:node,:veh])
